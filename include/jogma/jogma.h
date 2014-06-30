@@ -22,7 +22,7 @@
 
 #include <http_parser/http_parser.h>
 
-#define JOGMA_BUFFER_FRAMES	16384
+#define JOGMA_BUFFER_FRAMES	65536
 #define JOGMA_MAX_CHANNELS	8
 
 typedef enum {

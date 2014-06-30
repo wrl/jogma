@@ -35,10 +35,13 @@ process(jack_nframes_t nframes, void *ctx)
 		buf = jack_port_get_buffer(p->port, nframes);
 		written = jack_ringbuffer_write(p->buffer,
 				(void *) buf, nframes * sizeof(*buf));
-	}
 
-	if (!written)
-		puts("fuck");
+		if (written < nframes)
+			printf(
+				" :: JACK buffer overflow on channel %d:"
+				"tried to write %d frames, only wrote %zu\n",
+				i, nframes, written);
+	}
 
 	return 0;
 }
