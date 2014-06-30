@@ -87,8 +87,10 @@ read_from_socket(struct jogma_state *state)
 
 	recvd = recv(state->socket_fd, buf, sizeof(buf), 0);
 
-	if (recvd > 0)
-		return jogma_http_process(state, buf, sizeof(buf));
+	if (recvd > 0) {
+		jogma_http_process(state, buf, recvd);
+		return recvd;
+	}
 
 	return recvd;
 }

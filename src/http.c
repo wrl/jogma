@@ -145,7 +145,8 @@ jogma_http_send_headers(struct jogma_state *state)
 int
 jogma_http_process(struct jogma_state *state, const char *buf, size_t nbytes)
 {
-	return http_parser_execute(&state->http.parser, &parser_settings, buf, nbytes);
+	return http_parser_execute(&state->http.parser,
+			&parser_settings, buf, nbytes);
 }
 
 int
