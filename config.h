@@ -20,6 +20,10 @@
  * change the things below this line
  ****************************************************************************/
 
+/* number of samples to buffer.
+ * default is 8 seconds at 44100. */
+const size_t JOGMA_BUFFER_FRAMES = (44100 * 8);
+
 struct jogma_stream stream_config = {
 	/**
 	 * the host, port, and mountpoint of your stream

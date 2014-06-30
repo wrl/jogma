@@ -19,6 +19,8 @@
 #include "jogma/jogma.h"
 #include "jogma_private/util.h"
 
+extern const size_t JOGMA_BUFFER_FRAMES;
+
 static int
 process(jack_nframes_t nframes, void *ctx)
 {

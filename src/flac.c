@@ -22,6 +22,8 @@
 
 #include "jogma/jogma.h"
 
+extern const size_t JOGMA_BUFFER_FRAMES;
+
 static FLAC__StreamEncoderWriteStatus
 write_cb(const FLAC__StreamEncoder *env, const FLAC__byte *buf, size_t nbytes,
 		unsigned samples, unsigned current_frame, void *ctx)
