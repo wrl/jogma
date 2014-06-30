@@ -104,7 +104,7 @@ jogma_http_send_headers(struct jogma_state *state)
 
 	encode_auth_basic_header(state, auth, sizeof(auth));
 
-	ADD_HEADER_SPRINTF("PUT %s HTTP/1.1", "/stream");
+	ADD_HEADER_SPRINTF("PUT %s HTTP/1.1", stream->mount_point);
 	ADD_HEADER_SPRINTF("Authorization: Basic %s", auth);
 	ADD_HEADER_SPRINTF("Host: %s:%d", stream->server, stream->port);
 	ADD_HEADER("Content-type: application/ogg");
