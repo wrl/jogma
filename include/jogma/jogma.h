@@ -57,7 +57,7 @@ struct jogma_stream {
 };
 
 struct jogma_state {
-	jogma_status_t status;
+	volatile jogma_status_t status;
 
 	int socket_fd;
 
@@ -94,4 +94,5 @@ void jogma_net_close(struct jogma_state *);
 
 int  jogma_init(struct jogma_state *);
 void jogma_event_loop(struct jogma_state *);
+int  jogma_transition(struct jogma_state *, jogma_status_t new_status);
 void jogma_fini(struct jogma_state *);

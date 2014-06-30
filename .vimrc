@@ -13,7 +13,4 @@ let g:syntastic_c_include_dirs = [
 			\ "third-party",
 			\ "build"]
 
-let g:syntastic_objc_compiler_options = g:syntastic_c_compiler_options
-let g:syntastic_objc_include_dirs = g:syntastic_c_include_dirs
-
 set path+=include,build,third-party

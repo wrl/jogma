@@ -30,6 +30,9 @@ process(jack_nframes_t nframes, void *ctx)
 	size_t written;
 	float *buf;
 
+	if (state->status != JOGMA_STATUS_RUNNING)
+		return 0;
+
 	channels = state->jack.channels;
 	for (i = 0; i < channels; i++) {
 		p = &state->jack.ports[i];

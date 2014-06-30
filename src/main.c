@@ -61,14 +61,10 @@ main(int argc, char **argv)
 	if (jogma_jack_init(&state, ARRAY_LENGTH(jogma_input_ports)))
 		return -1;
 
-	if (jogma_flac_init(&state))
-		return -1;
-
 	connect_to_inports(&state);
 
 	jogma_event_loop(&state);
 
-	jogma_flac_fini(&state);
 	jogma_jack_fini(&state);
 	jogma_fini(&state);
 

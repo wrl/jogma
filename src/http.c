@@ -21,6 +21,8 @@
 #include <b64/cencode.h>
 #include <http_parser/http_parser.h>
 
+#include <wwrl/vector.h>
+
 #include "jogma/jogma.h"
 #include "jogma/http.h"
 
@@ -52,7 +54,7 @@ on_status(http_parser *parser, const char *at, size_t length)
 	switch (parser->status_code) {
 	case 200:
 		puts(" :: server said \"OK\", starting stream...");
-		state->status = JOGMA_STATUS_RUNNING;
+		jogma_transition(state, JOGMA_STATUS_RUNNING);
 		/* fall through */
 
 	case 100:
@@ -62,11 +64,13 @@ on_status(http_parser *parser, const char *at, size_t length)
 		break;
 	}
 
+	/* all error cases handled here */
+
 	fprintf(stderr, " !! icecast server said: %d: ", parser->status_code);
 	fwrite(at, 1, length, stderr);
 	fputs("\n !! bailing out...\n", stderr);
 
-	state->status = JOGMA_STATUS_STOPPING;
+	jogma_transition(state, JOGMA_STATUS_STOPPING);
 	return 0;
 }
 
@@ -87,9 +91,13 @@ jogma_http_send_headers(struct jogma_state *state)
 	const struct jogma_stream *stream = state->stream;
 	char header_buf[256], auth[527];
 
+	VECTOR(header_vec, char) headers = {};
+
+	VECTOR_INIT(&headers, 256);
+
 #define ADD_HEADER(h) do {													\
-	send(state->socket_fd, h, strlen(h), 0);								\
-	send(state->socket_fd, "\n", 1, 0);										\
+	VECTOR_PUSH_BACK_DATA(&headers, h, strlen(h));							\
+	VECTOR_PUSH_BACK(&headers, "\n");										\
 } while (0)
 
 #define ADD_HEADER_SPRINTF(fmt, ...) do {									\
@@ -125,6 +133,11 @@ jogma_http_send_headers(struct jogma_state *state)
 #undef ADD_HEADER_METADATA_STR
 #undef ADD_HEADER_SPRINTF
 #undef ADD_HEADER
+#undef AVAILABLE
+#undef LEN
+
+	jogma_net_send(state, VECTOR_FRONT(&headers), headers.size);
+	VECTOR_FREE(&headers);
 
 	return 0;
 }

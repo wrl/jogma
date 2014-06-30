@@ -79,7 +79,7 @@ spool_samples_to_flac(struct jogma_state *state)
 	return min_available;
 }
 
-static void
+static ssize_t
 read_from_socket(struct jogma_state *state)
 {
 	char buf[512];
@@ -88,7 +88,9 @@ read_from_socket(struct jogma_state *state)
 	recvd = recv(state->socket_fd, buf, sizeof(buf), 0);
 
 	if (recvd > 0)
-		jogma_http_process(state, buf, sizeof(buf));
+		return jogma_http_process(state, buf, sizeof(buf));
+
+	return recvd;
 }
 
 int
@@ -98,8 +100,6 @@ jogma_init(struct jogma_state *state)
 		return -1;
 
 	jogma_http_init(state);
-	jogma_http_send_headers(state);
-
 	state->status = JOGMA_STATUS_STARTING;
 	return 0;
 }
@@ -112,6 +112,8 @@ jogma_event_loop(struct jogma_state *state)
 
 	fd.fd = state->socket_fd;
 	fd.events = POLLIN;
+
+	jogma_http_send_headers(state);
 
 	for (;;) {
 		poll(&fd, 1, HTTP_CHUNK_MS);
@@ -135,6 +137,44 @@ jogma_event_loop(struct jogma_state *state)
 		FLAC__stream_encoder_process(state->flac.encoder,
 				(const FLAC__int32 **) state->flac.in_buffers, available);
 	}
+}
+
+int
+jogma_transition(struct jogma_state *state, jogma_status_t new_status)
+{
+	switch (state->status) {
+	case JOGMA_STATUS_STARTING:
+		switch (new_status) {
+		case JOGMA_STATUS_RUNNING:
+			jogma_flac_init(state);
+			break;
+
+		case JOGMA_STATUS_STOPPING:
+			break;
+
+		default:
+			return -1;
+		}
+
+		break;
+
+	case JOGMA_STATUS_RUNNING:
+		switch (new_status) {
+		case JOGMA_STATUS_STOPPING:
+			jogma_flac_fini(state);
+			break;
+
+		default:
+			return -1;
+		}
+		break;
+
+	case JOGMA_STATUS_STOPPING:
+		return -1;
+	}
+
+	state->status = new_status;
+	return 0;
 }
 
 void
