@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+def build(ctx):
+    ctx.objects(
+        source=[
+            'b64/cencode.c',
+            'b64/cdecode.c'
+        ],
+
+        includes=['.'],
+        export_includes=['.'],
+        target='b64')
+
+    ctx.objects(
+        source=[
+            'http_parser/http_parser.c',
+        ],
+
+        includes=['.'],
+        export_includes=['.'],
+        target='http_parser')

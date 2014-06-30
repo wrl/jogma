@@ -1,0 +1,15 @@
+# waf stuff
+.lock-waf*
+.waf*
+
+# python stuff
+__pycache__
+*.pyc
+*.pyo
+
+# build stuff
+build/
+
+# temporary stuff
+*.swp
+*~

@@ -1,0 +1,29 @@
+    __
+   |__|.-----.-----.--------.---.-.
+   |  ||  _  |  _  |        |  _  |
+   |  ||_____|___  |__|__|__|___._|
+  |___|      |_____|
+
+   jogma is a program that streams OggFLAC data to an Icecast 2.4.0
+   server from JACK. it does not do anything else. just OggFLAC, just
+   Iceast 2.4.0, and just JACK.
+
+   all settings are done by editing `config.h` in the root directory.
+   you must recompile after changing your settings. if you have used
+   any software from suckless.org, you will be familiar with this
+   process.
+
+   you will need JACK and libflac to compile. you might need libogg
+   too, i'm not sure.
+
+   to compile:
+
+       ./waf configure
+       ./waf
+
+   to run:
+
+       ./build/src/jogma
+
+   wrl@illest.net, holler.
+
