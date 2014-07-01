@@ -49,7 +49,7 @@ def configure(ctx):
 
     ctx.env.append_unique('CFLAGS', [
         '-std=gnu99', '-Wall', '-Werror', '-Wextra', '-Wcast-align',
-        '-Wno-microsoft', '-Wno-missing-field-initializers', '-Wno-unused-parameter',
+        '-Wno-missing-field-initializers', '-Wno-unused-parameter',
         '-ffunction-sections', '-fdata-sections', '-ggdb'])
 
     [ctx.define('_JOGMA_VERSION_' + v[0], v[1], quote=False)
