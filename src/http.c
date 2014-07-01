@@ -21,7 +21,7 @@
 #include <b64/cencode.h>
 #include <http_parser/http_parser.h>
 
-#include <wwrl/vector.h>
+#include <wwrl/vector_stdlib.h>
 
 #include "jogma/jogma.h"
 #include "jogma/http.h"
