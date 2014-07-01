@@ -19,15 +19,15 @@ def separator():
 # dep checking functions
 #
 
-def pkg_check(ctx, pkg):
+def pkg_check(ctx, pkg, what='--cflags --libs'):
     ctx.check_cfg(
-        package=pkg, args='--cflags --libs', uselib_store=pkg.upper())
+        package=pkg, args=what, uselib_store=pkg.upper())
 
 def check_jack(ctx):
     pkg_check(ctx, 'jack')
 
 def check_flac(ctx):
-    pkg_check(ctx, 'flac')
+    pkg_check(ctx, 'flac', '--libs')
 
 #
 # waf stuff
